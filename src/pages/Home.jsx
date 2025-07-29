@@ -1,13 +1,20 @@
-import React from "react";
+import { motion } from 'framer-motion'
 
-export default function Home() {
+const Home = () => {
   return (
-    <div className="text-3xl font-bold text-center mt-20 text-blue-600">
-      ✅ Home Page Loaded Successfully!
-<h2 className="text-4xl font-bold mb-4">Welcome to My Website</h2>
-<p className="text-lg leading-relaxed">
-  I’m a passionate developer who loves building web apps using React, Tailwind, and other modern tools.
-</p>
-    </div>
-  );
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -50 }}
+      transition={{ duration: 0.5 }}
+      className="p-8"
+    >
+      <h1 className="text-4xl font-bold text-center">Welcome to Homepage</h1>
+      <p className="mt-4 text-center text-gray-600 dark:text-gray-300">
+        This is a beautifully animated homepage using Framer Motion.
+      </p>
+    </motion.div>
+  )
 }
+
+export default Home
