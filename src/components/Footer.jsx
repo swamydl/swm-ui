@@ -1,7 +1,8 @@
+// src/components/Footer.jsx
 const Footer = () => {
   return (
-    <footer className="bg-gray-200 text-center py-4 mt-10">
-      <p className="text-sm text-gray-600">© 2025 SWM-UI. All rights reserved.</p>
+    <footer className="bg-gray-200 dark:bg-gray-800 text-center py-4 text-gray-700 dark:text-gray-300">
+      © 2025 My Website. All rights reserved.
     </footer>
   );
 };
