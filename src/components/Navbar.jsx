@@ -1,45 +1,81 @@
-import { useEffect, useState } from "react";
-import { Moon, Sun } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Menu, X } from "lucide-react";
+import DarkModeToggle from "./DarkModeToggle";
+import { motion } from "framer-motion";
 
-const DarkModeToggle = () => {
-  const [theme, setTheme] = useState("light");
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme") || "light";
-    setTheme(storedTheme);
-    document.documentElement.classList.toggle("dark", storedTheme === "dark");
-  }, []);
+  const toggleMenu = () => setIsOpen(!isOpen);
 
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
-  };
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Services", path: "/services" },
+    { name: "Contact", path: "/contact" },
+  ];
 
   return (
-    <button
-      onClick={toggleTheme}
-      className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center transition-all"
-    >
-      <AnimatePresence mode="wait">
+    <nav className="bg-white dark:bg-gray-900 shadow-md fixed top-0 left-0 w-full z-50 transition-colors duration-500">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+        
+        {/* Logo */}
         <motion.div
-          key={theme}
-          initial={{ rotate: -90, opacity: 0 }}
-          animate={{ rotate: 0, opacity: 1 }}
-          exit={{ rotate: 90, opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
         >
-          {theme === "dark" ? (
-            <Sun className="text-yellow-400" />
-          ) : (
-            <Moon className="text-blue-600" />
-          )}
+          <Link to="/" className="text-2xl font-bold text-blue-600 dark:text-white">
+            SWM-UI
+          </Link>
         </motion.div>
-      </AnimatePresence>
-    </button>
+
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center space-x-6">
+          {navLinks.map((link, index) => (
+            <Link
+              key={index}
+              to={link.path}
+              className="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 transition"
+            >
+              {link.name}
+            </Link>
+          ))}
+          <DarkModeToggle />
+        </div>
+
+        {/* Mobile Menu Toggle */}
+        <div className="md:hidden flex items-center">
+          <DarkModeToggle />
+          <button onClick={toggleMenu} className="ml-3 text-gray-800 dark:text-white">
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          className="md:hidden bg-white dark:bg-gray-900 px-4 pb-4"
+        >
+          {navLinks.map((link, index) => (
+            <Link
+              key={index}
+              to={link.path}
+              onClick={() => setIsOpen(false)}
+              className="block py-2 text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition"
+            >
+              {link.name}
+            </Link>
+          ))}
+        </motion.div>
+      )}
+    </nav>
   );
 };
 
-export default DarkModeToggle;
+export default Navbar;

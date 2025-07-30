@@ -1,8 +1,10 @@
+// src/components/DarkModeToggle.jsx
 import { useEffect, useState } from "react";
-import { Moon, Sun } from "lucide-react";
+import { motion } from "framer-motion";
+import { Moon, Sun } from "lucide-react"; // Or use emojis/icons
 
 const DarkModeToggle = () => {
-  const [theme, setTheme] = useState(
+  const [theme, setTheme] = useState(() =>
     localStorage.getItem("theme") || "light"
   );
 
@@ -12,16 +14,18 @@ const DarkModeToggle = () => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
   return (
-    <button
+    <motion.button
+      whileTap={{ rotate: 360, scale: 0.9 }}
+      transition={{ type: "spring", stiffness: 300 }}
       onClick={toggleTheme}
-      className="ml-4 p-2 rounded-full border dark:border-white border-gray-800 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+      className="p-2 rounded-full bg-gray-200 dark:bg-gray-800"
     >
-      {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-    </button>
+      {theme === "dark" ? <Sun className="text-yellow-300" /> : <Moon className="text-gray-700" />}
+    </motion.button>
   );
 };
 

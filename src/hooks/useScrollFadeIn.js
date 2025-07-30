@@ -1,32 +1,29 @@
-import { useEffect, useRef } from "react";
-import { useAnimation, motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+// src/hooks/useScrollFadeIn.js
+import { useRef, useEffect } from "react";
+import { useAnimation } from "framer-motion";
+import { useInView } from "framer-motion";
 
-export const useScrollFadeIn = (delay = 0, direction = "up") => {
+export const useScrollFadeIn = (direction = "up", duration = 0.7, delay = 0) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
   const controls = useAnimation();
-  const [ref, inView] = useInView({ triggerOnce: true });
+
   const variants = {
-    hidden: {
-      opacity: 0,
-      y: direction === "up" ? 40 : direction === "down" ? -40 : 0,
-      x: direction === "left" ? 40 : direction === "right" ? -40 : 0,
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      transition: { duration: 0.6, delay },
-    },
+    up: { y: 20, opacity: 0 },
+    down: { y: -20, opacity: 0 },
+    left: { x: 20, opacity: 0 },
+    right: { x: -20, opacity: 0 },
   };
 
   useEffect(() => {
-    if (inView) controls.start("visible");
-  }, [controls, inView]);
+    if (inView) {
+      controls.start({ x: 0, y: 0, opacity: 1, transition: { duration, delay } });
+    }
+  }, [inView, controls, delay, duration]);
 
   return {
     ref,
-    initial: "hidden",
     animate: controls,
-    variants,
+    initial: variants[direction],
   };
 };

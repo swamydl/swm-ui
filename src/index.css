@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* src/index.css or global tailwind layer */
 body {
-  @apply bg-white text-black dark:bg-gray-900 dark:text-white;
+  @apply bg-white text-black transition-colors duration-500;
+}
+.dark body {
+  @apply bg-gray-900 text-white;
 }
