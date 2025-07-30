@@ -1,25 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
+import { Moon, Sun } from "lucide-react"
 
-const ThemeToggle = () => {
-  const [darkMode, setDarkMode] = useState(false);
+export default function ThemeToggle() {
+  const [theme, setTheme] = useState("light")
 
   useEffect(() => {
-    const root = window.document.documentElement;
-    if (darkMode) {
-      root.classList.add('dark');
+    const root = window.document.documentElement
+    if (theme === "dark") {
+      root.classList.add("dark")
     } else {
-      root.classList.remove('dark');
+      root.classList.remove("dark")
     }
-  }, [darkMode]);
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light")
+  }
 
   return (
-    <button
-      onClick={() => setDarkMode(!darkMode)}
-      className="px-4 py-2 rounded-md text-sm font-medium bg-gray-200 dark:bg-gray-800 dark:text-white"
+    <motion.button
+      whileTap={{ scale: 0.9, rotate: 15 }}
+      className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 transition"
+      onClick={toggleTheme}
     >
-      {darkMode ? 'Light Mode' : 'Dark Mode'}
-    </button>
-  );
-};
-
-export default ThemeToggle;
+      {theme === "dark" ? (
+        <Sun className="w-5 h-5 text-yellow-400" />
+      ) : (
+        <Moon className="w-5 h-5 text-blue-600" />
+      )}
+    </motion.button>
+  )
+}

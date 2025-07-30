@@ -1,20 +1,35 @@
-import { motion } from 'framer-motion'
+import AnimatedButton from "../components/AnimatedButton";
+import { motion } from "framer-motion";
+import Reveal from "../components/Reveal";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -50 }}
-      transition={{ duration: 0.5 }}
-      className="p-8"
-    >
-      <h1 className="text-4xl font-bold text-center">Welcome to Homepage</h1>
-      <p className="mt-4 text-center text-gray-600 dark:text-gray-300">
-        This is a beautifully animated homepage using Framer Motion.
-      </p>
-    </motion.div>
-  )
-}
+  const navigate = useNavigate();
 
-export default Home
+  return (
+    <div className="p-8 text-center">
+      <Reveal>
+        <h1 className="text-4xl font-bold mb-4">Welcome to SWM-UI</h1>
+      </Reveal>
+      <Reveal>
+        <p className="text-gray-700 dark:text-gray-300 mb-6">
+          Build stunning, animated, and responsive UIs using React, Tailwind, and Framer Motion.
+        </p>
+      </Reveal>
+      <Reveal>
+        <AnimatedButton onClick={() => navigate("/services")}>
+          View Services
+        </AnimatedButton>
+        <motion.button
+  whileHover={{ scale: 1.05, backgroundColor: "#2563EB" }} // blue-600
+  whileTap={{ scale: 0.95 }}
+  className="bg-blue-500 text-white px-6 py-2 rounded-lg shadow-md transition"
+>
+  Get Started
+</motion.button>
+      </Reveal>
+    </div>
+  );
+};
+
+export default Home;

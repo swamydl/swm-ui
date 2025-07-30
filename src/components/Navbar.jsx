@@ -1,50 +1,45 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { FaBars, FaTimes } from "react-icons/fa";
-import DarkModeToggle from "./DarkModeToggle";
+import { useEffect, useState } from "react";
+import { Moon, Sun } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const DarkModeToggle = () => {
+  const [theme, setTheme] = useState("light");
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme") || "light";
+    setTheme(storedTheme);
+    document.documentElement.classList.toggle("dark", storedTheme === "dark");
+  }, []);
 
-  const closeMenu = () => setIsOpen(false);
+  const toggleTheme = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
+  };
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-md">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold text-blue-600 dark:text-white">
-          MySite
-        </Link>
-
-        {/* Desktop menu */}
-        <div className="hidden md:flex space-x-6">
-          <Link to="/" onClick={closeMenu} className="hover:text-blue-500 dark:text-white">Home</Link>
-          <Link to="/about" onClick={closeMenu} className="hover:text-blue-500 dark:text-white">About</Link>
-          <Link to="/services" onClick={closeMenu} className="hover:text-blue-500 dark:text-white">Services</Link>
-          <Link to="/contact" onClick={closeMenu} className="hover:text-blue-500 dark:text-white">Contact</Link>
-        </div>
-
-        {/* Dark mode toggle */}
-        <DarkModeToggle />
-
-        {/* Mobile menu icon */}
-        <div className="md:hidden text-xl text-blue-600 dark:text-white" onClick={toggleMenu}>
-          {isOpen ? <FaTimes /> : <FaBars />}
-        </div>
-      </div>
-
-      {/* Mobile menu links */}
-      {isOpen && (
-        <div className="md:hidden px-4 pb-4 space-y-2 bg-white dark:bg-gray-800">
-          <Link to="/" onClick={closeMenu} className="block hover:text-blue-500 dark:text-white">Home</Link>
-          <Link to="/about" onClick={closeMenu} className="block hover:text-blue-500 dark:text-white">About</Link>
-          <Link to="/services" onClick={closeMenu} className="block hover:text-blue-500 dark:text-white">Services</Link>
-          <Link to="/contact" onClick={closeMenu} className="block hover:text-blue-500 dark:text-white">Contact</Link>
-        </div>
-      )}
-    </nav>
+    <button
+      onClick={toggleTheme}
+      className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center transition-all"
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={theme}
+          initial={{ rotate: -90, opacity: 0 }}
+          animate={{ rotate: 0, opacity: 1 }}
+          exit={{ rotate: 90, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {theme === "dark" ? (
+            <Sun className="text-yellow-400" />
+          ) : (
+            <Moon className="text-blue-600" />
+          )}
+        </motion.div>
+      </AnimatePresence>
+    </button>
   );
 };
 
-export default Navbar;
+export default DarkModeToggle;

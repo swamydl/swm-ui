@@ -1,15 +1,21 @@
 import { motion } from "framer-motion";
+import { FaCode, FaPaintBrush, FaChartLine } from "react-icons/fa";
 
-const ServiceCard = ({ icon: Icon, title, description }) => {
+const icons = {
+  code: <FaCode size={30} />,
+  design: <FaPaintBrush size={30} />,
+  seo: <FaChartLine size={30} />,
+};
+
+const ServiceCard = ({ title, description, icon }) => {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
-      className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md transition-all duration-300"
+      whileTap={{ scale: 0.97 }}
+      className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg text-center transition-colors"
     >
-      <div className="text-blue-600 dark:text-blue-400 text-3xl mb-3">
-        <Icon />
-      </div>
-      <h3 className="text-xl font-semibold mb-2 dark:text-white">{title}</h3>
+      <div className="text-primary mb-4">{icons[icon]}</div>
+      <h3 className="text-xl font-semibold mb-2">{title}</h3>
       <p className="text-gray-600 dark:text-gray-300">{description}</p>
     </motion.div>
   );

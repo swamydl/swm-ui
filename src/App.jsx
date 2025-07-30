@@ -1,5 +1,8 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
+
+import BlogPage from './pages/BlogPage'
+import BlogPost from './pages/BlogPost'
 import Home from './pages/Home'
 import About from './pages/About'
 import Services from './pages/Services'
@@ -21,6 +24,8 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog" element={<BlogPage />} />
+         <Route path="/blog/:slug" element={<BlogPost />} />
         </Routes>
       </AnimatePresence>
       <Footer />
